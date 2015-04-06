@@ -1,0 +1,4 @@
+texas	LOCATION	
+latin	LOCATION	
+america	LOCATION	
+florida	LOCATION	
