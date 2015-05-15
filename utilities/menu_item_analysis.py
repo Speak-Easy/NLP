@@ -31,7 +31,7 @@ def load_text_menu(menu_path):
     with open(menu_path) as f:
 	return set(map(string.strip, f.read().split()))
 
-def find_occurrences_of_menu_items(reviews, menu, tokenizer=tokenizer):
+def find_occurrences_of_menu_items(reviews, menu, stopwords, tokenizer=tokenizer):
 
     word_counts = Counter()
 
@@ -40,8 +40,9 @@ def find_occurrences_of_menu_items(reviews, menu, tokenizer=tokenizer):
 	for sent in review_sentences:
 	    
 	    if (len(filter(lambda x: x in menu, sent.split())) > 0): 
-		print('---', sent, '---', sep='\n')
-		word_counts.update(sent.split())
+    		print('---', sent, '---', sep='\n')
+		words = filter(lambda w: w not in stopwords, sent.split())
+		word_counts.update(words)
 		
 
     return word_counts
@@ -62,8 +63,8 @@ def main(argv):
 
     menu = load_text_menu(menu_path)
 
-    word_counts = find_occurrences_of_menu_items(reviews, menu)
+    word_counts = find_occurrences_of_menu_items(reviews, menu, stopwords)
 
-    print('\n\n\n', word_counts.most_common(20))
+    print('\n\n\n---------- The most common non-stopwords ----------', word_counts.most_common(20), sep='\n')
 
 if __name__ == "__main__": main(sys.argv)
