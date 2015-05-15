@@ -2,15 +2,17 @@ from __future__ import division
 from pattern.en import pluralize, singularize, suggest, ngrams, wordnet
 import json, os, operator, pickle, re, sys, getopt, argparse
 
-
-stopwords = ''
+global stopwords
+stopwords = os.path.dirname(os.path.realpath(__file__))
+stopwords = os.path.join(stopwords, 'stopwords/stopwords.pickle')
 # using a global variable to count total number of words
 total_count = 0
 
-def open_pickle():
-	global stopwords
-	# open stopword list
-	stopwords = pickle.load(open("stopwords/stopwords.pickle", "rb"))
+def open_pickle(stopwords=stopwords):
+    with open(stopwords, 'rb') as f:
+	stopwords = set(pickle.load(f))
+
+    return stopwords
 
 def singularize_words(words_list):
 	return map(singularize, words_list)
@@ -24,7 +26,7 @@ def correct_words(words_list):
 def word_in_stopwords(word):
 	return word not in stopwords
 
-def remove_stop_words(words_list):
+def remove_stop_words(words_list, stopwords=stopwords):
 	return filter(word_in_stopwords, words_list)
 
 def correct_word(word):
