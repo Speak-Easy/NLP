@@ -4,6 +4,7 @@ import json, os, operator, pickle, re, sys, getopt, argparse
 
 
 stopwords = ''
+open_stopwords()
 # using a global variable to count total number of words
 total_count = 0
 
@@ -16,7 +17,7 @@ def singularize_words(words_list):
 	return map(singularize, words_list)
 
 def lowercase_words(words_list):
-	return map(lambda x: x.lower(), words_list)
+	return map(string.lower, words_list)
 
 def correct_words(words_list):
 	return [tup[0][0] for tup in map(suggest, words_list)]
